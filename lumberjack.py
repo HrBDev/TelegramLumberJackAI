@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import numpy
 import pyautogui
 from PIL import Image
@@ -9,13 +11,15 @@ branch = {161, 116, 56, 255}
 class Game:
     driver = webdriver.Firefox()
     isRight = False
-    interval = 0.0082
+    interval = 0.00015
 
     def __init__(self):
         self.driver.set_window_size(600, 800)
         self.driver.get(
             "https://tbot.xyz/lumber"
-            "#eyJ1Ijo1NDAxODc0MjgsIm4iOiJIQG1pZHIzemEgIiwiZyI6Ikx1bWJlckphY2siLCJjaSI6IjMxMzY0OTU4NDY0OTg0NTMyOTIiLCJpIjoiQkFBQUFPbG9BUUFrbXpJZ0FjdlJqSXBHRVNNIn0zMzJlMzYxMGVlNjRlYzA2Y2FiNDNlNTMyZjY2OTdlMw==&tgShareScoreUrl=tg%3A%2F%2Fshare_game_score%3Fhash%3Dn5FSzjfd65_o5wSM4Qi-Uc2p0PhKB6k70jE3EIjvC6w"
+            "#eyJ1Ijo1NDAxODc0MjgsIm4iOiJIQG1pZHIzemEgIiwiZyI6Ikx1bWJlckphY2siLCJjaSI6IjMxMzY0OTU4NDY0OTg0NTMyOTIiLCJpI"
+            "joiQkFBQUFPbG9BUUFrbXpJZ0FjdlJqSXBHRVNNIn0zMzJlMzYxMGVlNjRlYzA2Y2FiNDNlNTMyZjY2OTdlMw==&tgShareScoreUrl=tg"
+            "%3A%2F%2Fshare_game_score%3Fhash%3Dn5FSzjfd65_o5wSM4Qi-Uc2p0PhKB6k70jE3EIjvC6w"
         )
         assert "LumberJack" in self.driver.title
         self.left = self.driver.find_element_by_class_name("button_left")
@@ -29,18 +33,12 @@ class Game:
             pyautogui.press('left', interval=self.interval, _pause=False)
 
     def process(self):
-        self.driver.save_screenshot('./scr.png')
-        # self.driver.get_screenshot_as_png()
-        # img_file: Image = Image.open('./scr.png')
-        # img_file = BytesIO(base64.b64decode(self.driver.get_screenshot_as_base64()))
-        img: Image = Image.open('./scr.png')
+        img: Image = Image.open(BytesIO(self.driver.get_screenshot_as_png()))
 
         if self.isRight:
-            region: Image = img.crop((469, 325, 471, 345))
-            # region.save('./regionRight.png')
+            region: Image = img.crop((469, 280, 470, 340))
         else:
-            region = img.crop((261, 325, 263, 345))
-            # region.save('./regionLeft.png')
+            region = img.crop((261, 280, 262, 340))
 
         for row in numpy.asarray(region):
             for item in row:
