@@ -30,7 +30,7 @@ class Game:
 
     def process(self):
         self.driver.save_screenshot('./scr.png')
-        self.driver.get_screenshot_as_png()
+        # self.driver.get_screenshot_as_png()
         # img_file: Image = Image.open('./scr.png')
         # img_file = BytesIO(base64.b64decode(self.driver.get_screenshot_as_base64()))
         img: Image = Image.open('./scr.png')
