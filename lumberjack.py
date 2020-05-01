@@ -4,6 +4,7 @@ import numpy
 import pyautogui
 from PIL import Image
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 branch = {161, 116, 56, 255}
 
@@ -25,6 +26,8 @@ class Game:
         self.left = self.driver.find_element_by_class_name("button_left")
         self.right = self.driver.find_element_by_id("button_right")
         self.play_button = self.driver.find_element_by_class_name("button")
+        self.score = self.driver.find_element_by_class_name("score_value")
+        self.page_wrap = self.driver.find_element_by_id("page_wrap")
 
     def chop(self):
         if self.isRight:
@@ -52,10 +55,22 @@ class Game:
 
     def start(self):
         self.play_button.click()
-        while True:
+        while not self.is_game_finished():
             self.play()
+
+    def get_score(self):
+        print(self.score.text)
+
+    def is_game_finished(self):
+        if self.page_wrap.get_attribute("class") == "page_wrap ready in_result":
+            return True
+        else:
+            return False
 
 
 if __name__ == '__main__':
     game = Game()
-    game.start()
+    # Number of retries
+    for i in range(10):
+        game.start()
+        game.get_score()
