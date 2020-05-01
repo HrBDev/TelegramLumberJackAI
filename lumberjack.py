@@ -4,15 +4,16 @@ import numpy
 import pyautogui
 from PIL import Image
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
 
+# branch color
 branch = {161, 116, 56, 255}
 
 
 class Game:
     driver = webdriver.Firefox()
     isRight = False
-    interval = 0.00015
+    # Adjust according to your hardware
+    interval = 0.0000000
 
     def __init__(self):
         self.driver.set_window_size(600, 800)
